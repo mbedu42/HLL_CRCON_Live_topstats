@@ -106,7 +106,7 @@ TRANSL = {
     "defense": ["defense", "défense", "Verteidigung", "defesa", "Defensywa", "Defensa"],
     "combat": ["combat", "combat", "Kampf", "combate", "Walka", "Combate"],
     "support": ["support", "soutien", "Unterstützung", "suporte", "Wsparcie", "Apoyo"],
-    "garrison_rate": ["garrisons/min", "garnisons/min", "Garnisonen/min", "guarnições/min", "garnizony/min", "guarniciones/min"],
+    "garrison_rate": ["garrisons built/min", "garnisons posees/min", "Gebaute Garnisonen/min", "guarnicoes construidas/min", "zbudowane garnizony/min", "guarniciones construidas/min"],
     "killrate": ["kills/min", "kills/min", "Kills/min", "abates/min", "Zabójstwa/min", "bajas/min"],
     "vip_until": ["VIP until", "VIP jusqu'au", "VIP bis", "VIP até", "VIP do", "VIP hasta"],
     "already_vip": ["Already VIP !", "Déjà VIP !", "bereits VIP !", "Já é VIP!", "Aktualnie ma VIPa!", "¡Ya es VIP!"],
@@ -455,7 +455,6 @@ def stats_display(
     if (
         len(top_infantry_offdef) != 0
         or len(top_infantry_teamplay) != 0
-        or len(top_infantry_ratio) != 0
         or len(top_infantry_killrate) != 0
     ):
         message = f"█ {TRANSL['best_players'][LANG]} █\n\n"
@@ -469,7 +468,6 @@ def stats_display(
         if (
             len(top_infantry_offdef) != 0
             or len(top_infantry_teamplay) != 0
-            or len(top_infantry_ratio) != 0
             or len(top_infantry_killrate) != 0
         ):
             message += f"▓ {TRANSL['infantry'][LANG]} ▓\n\n"
@@ -477,10 +475,8 @@ def stats_display(
                 message += f"─ {TRANSL['offense'][LANG]} + ({TRANSL['defense'][LANG]} * {str(offensedefense_ratio)}) ─\n{top_infantry_offdef}\n"
             if len(top_infantry_teamplay) != 0:
                 message += f"─ {TRANSL['combat'][LANG]} + ({TRANSL['support'][LANG]} * {str(combatsupport_ratio)}) ─\n{top_infantry_teamplay}\n"
-            if len(top_infantry_ratio) != 0:
-                message += f"─ {TRANSL['garrison_rate'][LANG]} ─\n{top_infantry_ratio}\n"
             if len(top_infantry_killrate) != 0:
-                message += f"─ {TRANSL['killrate'][LANG]} ─\n{top_infantry_killrate}\n"
+                message += f"─ {TRANSL['garrison_rate'][LANG]} ─\n{top_infantry_killrate}\n"
     # squads
     if (
         len(top_squads_infantry_offdef) != 0
@@ -538,8 +534,8 @@ def stats_gather(
         # Players (infantry)
         get_top(rcon, callmode, "player", all_players_infantry, real_offdef, "name", "offense", "defense", "", all_players_infantry),
         get_top(rcon, callmode, "player", all_players_infantry, teamplay, "name", "combat", "support", "", all_players_infantry),
+        "",
         get_top(rcon, callmode, "player", all_players_infantry, garrison_rate, "name", "garrisons_built", "offense", "defense", all_players_infantry, allow_vip=False),
-        get_top(rcon, callmode, "player", all_players_infantry, killrate, "name", "kills", "offense", "defense", all_players_infantry, allow_vip=False),
         # Squads (infantry)
         get_top(rcon, callmode, "squad", all_squads_infantry, real_offdef, "name", "offense", "defense", "", all_players_infantry),
         get_top(rcon, callmode, "squad", all_squads_infantry, teamplay, "name", "combat", "support", "", all_players_infantry),
